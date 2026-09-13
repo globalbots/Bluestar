@@ -20,27 +20,24 @@ bot = commands.Bot(command_prefix="!", intents=intents)
 
 @bot.event
 async def on_ready():
-    print(f"✅ Logged in as {bot.user} ({bot.user.id})")
+    print(f"Logged in as {bot.user} ({bot.user.id})")
     await init_db()
-
-    # Register persistent views so buttons/selects work after restart
+    
     from cogs.ticket_panel import TicketPanelView, TicketChannelView
     bot.add_view(TicketPanelView())
-    # TicketChannelView needs per-message state (user), so it is re-added
-    # dynamically when tickets are created; nothing to register globally here.
 
     try:
         synced = await bot.tree.sync()
-        print(f"🔄 Synced {len(synced)} slash command(s)")
+        print(f"Synced {len(synced)} slash command(s)")
     except Exception as e:
-        print(f"⚠️ Sync failed: {e}")
+        print(f"Sync failed: {e}")
 
 
 async def load_cogs():
     for filename in os.listdir("./cogs"):
         if filename.endswith(".py") and not filename.startswith("_"):
             await bot.load_extension(f"cogs.{filename[:-3]}")
-            print(f"📦 Loaded cog: {filename}")
+            print(f"Loaded cog: {filename}")
 
 
 async def main():
